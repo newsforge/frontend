@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { IndexComponent } from './index/index.component';
-import { AuthComponent } from './auth/auth.component';
+import { LoginComponent } from './auth/login.component';
 
 export const routes: Routes = [
   {
@@ -11,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: 'auth/login',
-    component: AuthComponent,
+    component: LoginComponent,
   },
   {
     path: '**',
