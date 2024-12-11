@@ -9,6 +9,12 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 
 import { routes } from './app.routes';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import { firebaseAuthInterceptor } from './core/interceptors/firebase-auth.interceptor';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDqdl5g7RjcWHKqd7XQkF1-33nmdJ4pWBI',
@@ -28,5 +34,6 @@ export const appConfig: ApplicationConfig = {
       AngularFireModule.initializeApp(firebaseConfig),
       AngularFireAuthModule
     ),
+    provideHttpClient(withFetch(), withInterceptors([firebaseAuthInterceptor])),
   ],
 };
