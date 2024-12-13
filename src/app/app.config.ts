@@ -15,6 +15,7 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { firebaseAuthInterceptor } from './core/interceptors/firebase-auth.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDqdl5g7RjcWHKqd7XQkF1-33nmdJ4pWBI',
@@ -35,5 +36,6 @@ export const appConfig: ApplicationConfig = {
       AngularFireAuthModule
     ),
     provideHttpClient(withFetch(), withInterceptors([firebaseAuthInterceptor])),
+    provideAnimationsAsync(),
   ],
 };
