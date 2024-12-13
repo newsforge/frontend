@@ -1,11 +1,12 @@
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
 
-import { AuthService } from '../../core/services/auth.service';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -37,7 +38,7 @@ import { MatIcon } from '@angular/material/icon';
           <div class="text-sm">{{ user.displayName }}</div>
           <button class="ml-6" mat-button (click)="logout()">
             <mat-icon>logout</mat-icon>
-            Logout
+            <span>Logout</span>
           </button>
         </div>
       </div>
@@ -45,11 +46,15 @@ import { MatIcon } from '@angular/material/icon';
   `,
 })
 export class NavbarComponent {
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private readonly router: Router
+  ) {}
 
   async logout() {
     try {
       await this.authService.signOut();
+      this.router.navigate(['/auth/login']);
     } catch (error) {
       console.error('Logout failed:', error);
     }

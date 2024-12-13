@@ -2,6 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-feed',
-  template: ` <section>This is the feed page.</section> `,
+  template: ` <h1 class="text-3xl">Your Feed</h1>`,
 })
 export class FeedComponent {}

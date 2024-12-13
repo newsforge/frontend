@@ -13,7 +13,7 @@ import { SettingsService } from '../core/services/settings.service';
   selector: 'app-settings',
   imports: [ReactiveFormsModule],
   template: ` <section>
-      <h1>Settings</h1>
+      <h1 class="text-3xl">Settings</h1>
       @for (sourceForm of form.controls; track $index) {
       <form
         [formGroup]="sourceForm"
