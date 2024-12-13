@@ -1,40 +1,32 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../core/services/auth.service';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule],
-  template: `
-    <div>
-      <h1 class="text-3xl">Account</h1>
-      <button (click)="signInWithGoogle()">Login with Google</button>
-      <button (click)="logout()">Logout</button>
-
-      <div *ngIf="auth.user$ | async as user">
-        <p>Welcome, {{ user.displayName }}!</p>
-        <img [src]="user.photoURL" alt="User profile" width="50" />
-      </div>
+  imports: [CommonModule, MatButton],
+  template: ` <div class="h-screen flex items-center justify-center">
+    <div class="flex flex-col">
+      <p class="mb-3 font-bold">Please log in to proceed</p>
+      <button mat-raised-button (click)="signInWithGoogle()">
+        Login with Google
+      </button>
     </div>
-  `,
+  </div>`,
 })
 export class LoginComponent {
   protected auth = inject(AuthService);
+  constructor(private readonly router: Router) {}
 
   async signInWithGoogle() {
     try {
       await this.auth.googleLogin();
+      this.router.navigate(['/']);
     } catch (error) {
       console.error('Login failed:', error);
-    }
-  }
-
-  async logout() {
-    try {
-      await this.auth.signOut();
-    } catch (error) {
-      console.error('Logout failed:', error);
     }
   }
 }

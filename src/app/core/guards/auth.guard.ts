@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { inject } from '@angular/core';
 import { map, take } from 'rxjs/operators';
+import { inject } from '@angular/core';
 
 import { AuthService } from '../services/auth.service';
 
@@ -12,15 +12,19 @@ export const AuthGuard = (route: ActivatedRouteSnapshot) => {
     take(1),
     map((user) => {
       const currentUrl = route.url.join('/');
-      console.log(currentUrl);
-      if (currentUrl == 'auth/login' && user) {
-        router.navigate(['/']);
+      if (currentUrl == 'auth/login') {
+        if (user) {
+          router.navigate(['/']);
+          return false;
+        } else {
+          return true;
+        }
+      } else if (user) {
+        return true;
+      } else {
+        router.navigate(['/auth/login']);
         return false;
       }
-
-      if (user) return true;
-      router.navigate(['/auth/login']);
-      return false;
     })
   );
 };
