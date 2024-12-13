@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { from, switchMap, catchError, throwError } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { inject } from '@angular/core';
 
 export const firebaseAuthInterceptor: HttpInterceptorFn = (req, next) => {
   const afAuth = inject(AngularFireAuth);
