@@ -10,29 +10,29 @@
           "style": "scss"
         }
       },
-      "root": "projects/news-forge",
-      "sourceRoot": "projects/news-forge/src",
+      "root": "",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/news-forge",
-            "index": "projects/news-forge/src/index.html",
-            "browser": "projects/news-forge/src/main.ts",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "projects/news-forge/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/news-forge/public"
+                "input": "public"
               }
             ],
             "styles": [
-              "projects/news-forge/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -82,16 +82,16 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "projects/news-forge/tsconfig.spec.json",
+            "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/news-forge/public"
+                "input": "public"
               }
             ],
             "styles": [
-              "projects/news-forge/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           }
