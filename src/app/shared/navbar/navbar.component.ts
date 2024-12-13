@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { MatToolbar } from '@angular/material/toolbar';
-import { RouterLink } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
+
+import { AuthService } from '../../core/services/auth.service';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-navbar',
