@@ -1,9 +1,11 @@
+import { RouterOutlet } from '@angular/router';
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+
+import { WrapperComponent } from './shared/wrapper/wrapper.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, WrapperComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

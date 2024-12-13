@@ -8,6 +8,7 @@ import { AuthService } from '../core/services/auth.service';
   imports: [CommonModule],
   template: `
     <div>
+      <h1 class="text-3xl">Account</h1>
       <button (click)="signInWithGoogle()">Login with Google</button>
       <button (click)="logout()">Logout</button>
 
