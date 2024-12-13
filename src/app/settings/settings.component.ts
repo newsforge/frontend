@@ -14,11 +14,12 @@ import { SettingsService } from '../core/services/settings.service';
   imports: [ReactiveFormsModule],
   template: ` <section>
       <h1 class="text-3xl">Settings</h1>
+      <p class="text-neutral-400">
+        Choose your news source and the way you want to filter them
+      </p>
+
       @for (sourceForm of form.controls; track $index) {
-      <form
-        [formGroup]="sourceForm"
-        style="background: #fafafa; padding: 16px; margin: 16px"
-      >
+      <form [formGroup]="sourceForm" style="padding: 16px; margin: 16px">
         <h3>Source Form {{ $index + 1 }}</h3>
         <input
           placeholder="Source Url {{ $index }}"
