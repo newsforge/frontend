@@ -16,7 +16,7 @@ import { AuthService } from '../../core/services/auth.service';
       <div class="container m-auto flex items-center">
         <button routerLink="/" mat-button>
           <mat-icon>feed</mat-icon>
-          <span>Feed</span>
+          <span>News Forge</span>
         </button>
         <button routerLink="/settings" mat-button>
           <mat-icon>settings</mat-icon>
