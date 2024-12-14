@@ -17,3 +17,15 @@ export interface Settings {
   source: string | null;
   criteria: Criteria[];
 }
+
+export interface NewsSourceDTO {
+  source: string;
+  criteria: string[];
+}
+
+export interface PreferenceDTO {
+  id?: number;
+  userId?: string;
+  apiKey?: string;
+  sources?: NewsSourceDTO[];
+}

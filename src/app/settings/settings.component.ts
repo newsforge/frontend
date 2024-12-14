@@ -1,98 +1,113 @@
-import {
-  FormGroup,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { Component, OnInit } from '@angular/core';
-import { CriteriaForm, SettingsForm } from '../core/models/settings.model';
+
 import { SettingsService } from '../core/services/settings.service';
+import { SourceDialogComponent } from './source-dialog.component';
+import {
+  Settings,
+  NewsSourceDTO,
+  PreferenceDTO,
+} from '../core/models/settings.model';
 
 @Component({
   selector: 'app-settings',
-  imports: [ReactiveFormsModule],
-  template: ` <section>
+  imports: [MatDialogModule, MatButtonModule, MatIconModule],
+  template: `
+    <section>
       <h1 class="text-3xl">Settings</h1>
       <p class="text-neutral-400">
         Choose your news source and the way you want to filter them
       </p>
 
-      @for (sourceForm of form.controls; track $index) {
-      <form [formGroup]="sourceForm" style="padding: 16px; margin: 16px">
-        <h3>Source Form {{ $index + 1 }}</h3>
-        <input
-          placeholder="Source Url {{ $index }}"
-          type="text"
-          formControlName="source"
-        />
+      <h1 class="text-2xl mt-6">Enabled sources</h1>
+      <p class="text-neutral-400">List of the your news sources</p>
 
-        <h3>Source Criteria</h3>
-
-        <div style="display: flex;">
-          @for (criteriaForm of sourceForm.controls.criteria.controls; track
-          $index) {
-          <form [formGroup]="criteriaForm">
-            <input
-              formControlName="criteria"
-              type="text"
-              placeholder="Criteria {{ $index }}"
-            />
-          </form>
-          }
-          <button (click)="addCriteria(sourceForm.controls.criteria)">
-            Add Criteria
-          </button>
+      <div class="mt-6">
+        @for (source of data?.sources; track $index) {
+        <div
+          class="p-5 bg-neutral-50 bg-opacity-10 rounded-lg gap-2 mb-6 flex justify-between"
+        >
+          <div>
+            <div><strong class="mr-3">Source:</strong> {{ source.source }}</div>
+            <div>
+              <strong class="mr-3">Filter Criteria:</strong>
+              {{ source.criteria }}
+            </div>
+          </div>
+          <div>
+            <button mat-icon-button (click)="onDelete(source)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </div>
-      </form>
-      }
+        }
+        <button class="my-5" mat-stroked-button (click)="onAdd()">
+          <mat-icon>add</mat-icon>
+          <span>New source</span>
+        </button>
+      </div>
     </section>
-
-    <section style="margin-top: 20px;">
-      <button (click)="addSource()">Add Source</button>
-      <button (click)="submit()">Send</button>
-    </section>`,
+  `,
 })
 export class SettingsComponent implements OnInit {
-  form!: FormArray<FormGroup<SettingsForm>>;
+  data?: PreferenceDTO;
 
   constructor(
-    private readonly fb: FormBuilder,
+    private readonly dialog: MatDialog,
     private readonly settingsService: SettingsService
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.array<FormGroup>([]);
-    this.addSource();
+    this.getSettings();
   }
 
-  addSource() {
-    this.form.controls.push(
-      this.fb.group({
-        source: new FormControl(''),
-        criteria: new FormArray([
-          new FormGroup({
-            criteria: new FormControl(''),
-          }),
-        ]),
-      })
-    );
+  getSettings() {
+    this.settingsService.getSettings().subscribe({
+      next: (result) => {
+        this.data = result;
+      },
+      error: (e) => {
+        console.error('There was an error', e);
+      },
+    });
   }
 
-  addCriteria(criteriaForm: FormArray<FormGroup<CriteriaForm>>) {
-    criteriaForm.push(
-      new FormGroup({
-        criteria: new FormControl(''),
-      })
-    );
+  onAdd(): void {
+    const ref = this.dialog.open(SourceDialogComponent, {
+      width: '400px',
+    });
+    ref.afterClosed().subscribe((result: Settings[]) => {
+      if (result) {
+        this.addSource(result);
+      }
+    });
   }
 
-  submit(): void {
-    console.log(this.form.getRawValue());
+  onDelete(source: NewsSourceDTO) {
+    this.settingsService.deleteSources(source).subscribe(() => {
+      this.getSettings();
+    });
+  }
+
+  private addSource(result: Settings[]) {
+    const newSource: NewsSourceDTO = {
+      source: result[0].source ?? '',
+      criteria: result[0].criteria.map((c) => c.criteria ?? '') ?? [],
+    };
+
+    this.data?.sources?.push(newSource);
+
+    if (!this.data) {
+      return;
+    }
+
     this.settingsService
-      .sendSettings(this.form.getRawValue() as any)
-      .subscribe((result) => {
-        console.log(result);
+      .updateSources(this.data.sources ?? [])
+      .subscribe(() => {
+        this.getSettings();
       });
   }
 }

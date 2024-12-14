@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { NewsSourceDTO, PreferenceDTO } from '../models/settings.model';
 import { environment } from './env';
-import { Settings } from '../models/settings.model';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +11,19 @@ import { Settings } from '../models/settings.model';
 export class SettingsService {
   constructor(private readonly http: HttpClient) {}
 
-  sendSettings(data: Settings) {
-    return this.http.post(environment.url + '/settings', data);
+  getSettings(): Observable<PreferenceDTO> {
+    return this.http.get(environment.url + '/preferences');
+  }
+
+  updateSources(sources: NewsSourceDTO[]) {
+    return this.http.put(environment.url + '/preferences/sources', {
+      sources,
+    });
+  }
+
+  deleteSources(sources: NewsSourceDTO) {
+    return this.http.delete(
+      environment.url + '/preferences/sources/' + sources.source
+    );
   }
 }
