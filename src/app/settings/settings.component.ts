@@ -6,11 +6,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { SettingsService } from '../core/services/settings.service';
 import { SourceDialogComponent } from './source-dialog.component';
-import {
-  Settings,
-  NewsSourceDTO,
-  PreferenceDTO,
-} from '../core/models/settings.model';
+import { NewsSourceDTO, PreferenceDTO } from '../core/models/settings.model';
 
 @Component({
   selector: 'app-settings',
@@ -79,7 +75,7 @@ export class SettingsComponent implements OnInit {
     const ref = this.dialog.open(SourceDialogComponent, {
       width: '400px',
     });
-    ref.afterClosed().subscribe((result: Settings[]) => {
+    ref.afterClosed().subscribe((result: NewsSourceDTO) => {
       if (result) {
         this.addSource(result);
       }
@@ -92,13 +88,8 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  private addSource(result: Settings[]) {
-    const newSource: NewsSourceDTO = {
-      source: result[0].source ?? '',
-      criteria: result[0].criteria.map((c) => c.criteria ?? '') ?? [],
-    };
-
-    this.data?.sources?.push(newSource);
+  private addSource(result: NewsSourceDTO) {
+    this.data?.sources?.push(result);
 
     if (!this.data) {
       return;
